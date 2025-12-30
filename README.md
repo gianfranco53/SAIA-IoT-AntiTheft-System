@@ -56,7 +56,7 @@ Il sistema è costruito su una base hardware solida ed espandibile:
 * **Automotive Security Systems**.
 * **Insurtech** e monitoraggio remoto.
 
-📩 **Email:** gianfr.colasanti@gmail
+📩 **Email:** gianfr.colasanti@gmail.com
 
 ---
 ### Disclaimer
