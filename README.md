@@ -57,7 +57,7 @@ Il sistema è costruito su una base hardware solida ed espandibile:
 * **Insurtech** e monitoraggio remoto.
 
 📩 **Email:** gianfr.colasanti@gmail.com
-
+🔗 **LinkedIn:** [gianfranco-colasanti-234b11300](https://www.linkedin.com/in/gianfranco-colasanti-234b11300)
 ---
 ### Disclaimer
 Il sistema SAIA è un Proof of Concept pubblicato a scopo di ricerca e valutazione tecnica. [cite_start]L'autore non si assume responsabilità per usi impropri o installazioni non conformi alle normative vigenti. [cite: 40, 41]
