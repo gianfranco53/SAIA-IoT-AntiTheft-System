@@ -1,75 +1,63 @@
-# SAIA-IoT (Sistema Antifurto Intelligente per Autoveicoli)
-## Proof of Concept: Architettura IoT Event-Driven e Sicura
+# SAIA-IoT: Sistema Antifurto Intelligente per Autoveicoli
+## Design IoT & Security-by-Design PoC | Progettato da Gianfranco Colasanti
 
-[![Status](https://img.shields.io/badge/Status-Functional_PoC-green.svg)]()
 [![Hardware](https://img.shields.io/badge/Hardware-ESP32_%7C_Android-blue.svg)]()
-[![License](https://img.shields.io/badge/License-Proprietary/Research-red.svg)]()
+[![Security](https://img.shields.io/badge/Security-Safe--Stop_%7C_Trap_Button-red.svg)]()
 
-SAIA-IoT è un sistema antifurto intelligente di nuova generazione per veicoli, progettato per superare i limiti dei tradizionali localizzatori GPS. Il progetto implementa un'architettura **event-driven** a basso consumo energetico, garantendo il controllo remoto totale senza dipendenze da infrastrutture cloud centralizzate.
+SAIA rappresenta l'integrazione di tecnologie Internet of Things (IoT) e comunicazioni wireless per offrire una soluzione di sicurezza automobilistica di nuova generazione. Il sistema supera i limiti degli antifurti tradizionali fornendo un controllo remoto strategico e una logica di blocco motore vincolata a rigorose condizioni di sicurezza.
 
 ---
 
-### 📊 Analisi Comparativa
-Perché SAIA-IoT si distingue dalle soluzioni commerciali standard:
+### 🛡️ Sicurezza Attiva e Funzionalità Core
 
-| Caratteristica | Tracker GPS Standard | Antifurti Satellitari | **SAIA-IoT** |
+#### 1. Gestione Energetica e Autonomia
+Il sistema è progettato con una logica di Power Management a due livelli per massimizzare l'autonomia della batteria tampone:
+* [cite_start]**Modalità Background:** Con l'app in esecuzione passiva, il consumo è drasticamente ridotto, permettendo un'operatività fino a circa **2 giorni** senza ricarica. [cite: 66, 75]
+* **Modalità UI (Active Tracking):** L'interfaccia utente completa è attivabile per l'interazione in tempo reale e per abilitare il "Pulsante Gabbietta". [cite_start]Sebbene comporti un incremento dei consumi, garantisce la massima reattività durante un evento critico. [cite: 70, 72, 74]
+* [cite_start]**Alimentazione Sotto Quadro:** L'unità ESP32 è asservita al Terminale 15 (quadro strumenti), attivandosi automaticamente all'accensione del veicolo. [cite: 14, 63]
+
+#### 2. Il "Pulsante Gabbietta" (Trappola Anti-Manomissione)
+In modalità UI, il localizzatore mostra un finto tasto "PREMI PER FERMARE LA LOCALIZZAZIONE":
+* [cite_start]**Azione**: La pressione attiva silenziosamente la fotocamera frontale. [cite: 38, 39]
+* [cite_start]**Notifica**: Scatta una foto dell'intruso e la invia istantaneamente via Telegram al proprietario. [cite: 39, 53]
+* **Protezione**: L'app opera in *Android Lock Task Mode* (Modalità Kiosk), disabilitando i tasti di sistema. [cite_start]L'uscita è possibile solo tramite una sequenza segreta di tasti volume. [cite: 33, 35, 36]
+
+#### 3. Protocollo "Single-Byte Trigger"
+Per eliminare il polling continuo e ridurre l'uso energetico del GPS, l'ESP32 opera come Server:
+* [cite_start]Al giro della chiave, l'ESP32 si avvia e invia un singolo byte (ping) al localizzatore Android (Client). [cite: 21]
+* [cite_start]Il localizzatore si risveglia istantaneamente e trasmette il comando memorizzato (BLOCCA/SBLOCCA) all'unità di controllo. [cite: 22]
+
+---
+
+### 🛠️ Architettura Hardware e Scalabilità
+Il sistema è costruito su una base hardware solida ed espandibile:
+* [cite_start]**Unità di Controllo**: ESP32 con gestione dello stato di blocco in memoria **EEPROM** per conservare lo stato anche in assenza di alimentazione. [cite: 13, 42]
+* [cite_start]**Attuatore**: Relè Automotive (12V 30/40A) interposto sulla pompa carburante o Terminale 15. Il prototipo prevede l'evoluzione verso MOSFET **IRLB3034**. [cite: 61, 63, 64]
+* **Espandibilità (GPIO Liberi)**: L'ESP32 dispone di pin aggiuntivi pronti per implementare:
+    * Allarme acustico attivabile remotamente tramite comando.
+    * LED di segnalazione "Auto Rubata" sul lunotto posteriore, programmabile per attivarsi temporizzato dopo il rilevamento del furto.
+
+---
+
+### 📊 Analisi dell'Autonomia (Test Batteria Interna)
+| Modalità Operativa | Stato GPS | Consumo Stimato (12h) | Autonomia Max |
 | :--- | :--- | :--- | :--- |
-| **Consumo Batteria** | Elevato (polling) | Medio/Alto | **Ottimizzato (Event-driven)** |
-| **Costi Ricorrenti** | SIM dati (Cloud) | Canone/Abbonamento | **Zero (Telegram/SMS)** |
-| **Sicurezza Attiva** | Taglio motore rischioso | Gestita da centrale | **Smart Safe-Stop (Fermo)** |
-| **Privacy Dati** | Server terzi/Cloud | Server proprietari | **Decentralizzato (Direct)** |
-| **Resilienza** | Bassa (Soggetta a jammer) | Media | **Alta (Persistenza EEPROM)** |
+| **Background (Passivo)** | OFF | **~ 3%** | **~ 2 Giorni** |
+| **Active Tracking (Furto)** | ON | **~ 12%** | ~ 40 Ore |
+| **Interfaccia Utente (UI)** | ON | **~ 100%** | Solo uso critico |
 
 ---
 
-### 🚀 Caratteristiche Principali e Funzionamento
-- **Immobilizzazione Intelligente:** Blocco motore remoto eseguito esclusivamente a veicolo fermo (Logica Safe-Stop).
-- **Feedback Visivo:** Il sistema integra un LED di stato sul modulo relè per la verifica immediata dell'attivazione del blocco.
-- **Unità di Controllo ESP32:** Gestione real-time con persistenza dello stato in EEPROM; in caso di distacco alimentazione, il sistema ricorda lo stato di blocco/sblocco impostato.
-- **Alimentazione Diretta:** Il sistema è progettato per operare con alimentazione costante, garantendo la reperibilità del veicolo anche a quadro spento (senza dipendenza dal Terminale 15).
-- **Gateway Android:** Smartphone dedicato in modalità kiosk per localizzazione e crittografia comunicazioni.
-- **Notifiche Real-time:** Integrazione completa con Telegram Bot API per avvisi e comandi.
+### 👤 Contatti e Collaborazioni
+[cite_start]Sviluppato da **Gianfranco Colasanti**, tecnico multidisciplinare senior con esperienza in meccanica, elettronica e sistemi embedded. [cite: 2]
+
+[cite_start]L'autore è aperto a discussioni riguardanti partnership industriali, accordi di licenza e industrializzazione del prodotto nei settori: [cite: 28, 46]
+* **Fleet Management** & Logistica.
+* **Automotive Security Systems**.
+* **Insurtech** e monitoraggio remoto.
+
+📩 **Email:** gianfr.colasanti@gmail
 
 ---
-
-### 🛠 Architettura del Sistema
-Il sistema è composto da tre livelli interagenti:
-1.  **Control Layer (ESP32):** Microcontrollore che funge da server Bluetooth e gestisce l'interfaccia fisica (Relè/MOSFET) con il cablaggio del veicolo.
-2.  **Communication Layer (Android):** Smartphone protetto da architettura anti-manomissione che funge da bridge tra la rete cellulare e l'unità di controllo locale.
-3.  **User Layer (Telegram/SMS):** Interfaccia di comando remota accessibile da qualsiasi dispositivo autorizzato.
-
----
-
-### 🛡 Sicurezza e Affidabilità
-- **Logica di Sicurezza Operativa:** Il blocco motore non può essere attivato se il sistema rileva il veicolo in movimento tramite i sensori del gateway, prevenendo arresti pericolosi.
-- **Resilienza Hardware:** L'uso della EEPROM dell'ESP32 garantisce che un eventuale tentativo di reset elettrico non sblocchi il veicolo se l'antifurto era attivo.
-
----
-
-### 📈 Stato del Progetto
-- [x] Prototipo hardware completamente funzionante.
-- [x] Test in condizioni reali su veicolo privato superati con successo.
-- [x] Implementazione persistenza stato su memoria non volatile.
-- [x] Sistema di allerta Telegram attivo e stabile.
-
----
-
-### 💼 Interessi Commerciali e Industriali
-L'autore è aperto a collaborazioni per l'industrializzazione del prodotto, licenze tecnologiche o partnership tecniche. Il progetto si rivolge a:
-- Aziende di sicurezza automotive.
-- Gestori di flotte aziendali (Fleet Management).
-- Provider di soluzioni assicurative (Insurtech).
-
----
-
-### 👤 Autore
-Sviluppato da un **Tecnico Multidisciplinare Senior** con solida esperienza in:
-- Meccanica ed Elettronica Automotive.
-- Sistemi Embedded e Sviluppo Firmware.
-- Integrazione Sistemi Elettroinformatici.
-
-**Contatti:** gianfr.colasanti@gmail.com
----
-
-### ⚠️ Disclaimer
-Questo repository è pubblicato esclusivamente a scopo di ricerca e valutazione tecnica (Proof of Concept). L'autore non si assume responsabilità per usi impropri. Nessuna licenza è attualmente concessa per usi commerciali senza accordi preventivi.
+### Disclaimer
+Il sistema SAIA è un Proof of Concept pubblicato a scopo di ricerca e valutazione tecnica. [cite_start]L'autore non si assume responsabilità per usi impropri o installazioni non conformi alle normative vigenti. [cite: 40, 41]
