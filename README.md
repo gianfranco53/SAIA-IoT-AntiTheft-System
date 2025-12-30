@@ -16,7 +16,7 @@ In modalità UI, il localizzatore mostra un finto tasto "PREMI PER FERMARE LA LO
 * **Azione:** La pressione attiva silenziosamente la fotocamera frontale.
 * **Notifica:** Scatta una foto dell'intruso e la invia istantaneamente tramite Telegram al proprietario.
 * **Protezione:** L'app funziona in **Android Lock Task Mode** (Modalità Kiosk), disabilitando i tasti di sistema. L'uscita è possibile solo tramite una sequenza segreta di tasti volume.
-* ![Interfaccia App SAIA-IoT e Tasto Gabbietta](nome_app.jpg)
+* ![Interfaccia App SAIA-IoT e Tasto Gabbietta](app.jpg)
 
 #### 3. Protocollo "Trigger a byte singolo"
 Per eliminare il polling continuo e ridurre l'uso energetico del GPS, l'ESP32 funziona come Server:
