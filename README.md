@@ -54,9 +54,9 @@ The project is aimed at companies operating in:
 - Fleet management solutions
 - Anti-theft and insurance technologies
 
-## Author
-Developed by a senior electronic and IT technician with over 40 years of experience
-in electro-informatics laboratories (INGV).
+Developed by a senior multidisciplinary technician with a background in mechanics,
+electronics and software development, and decades of hands-on experience in
+electro-informatics and embedded systems.
 
 ## Disclaimer
 This project is provided for research and evaluation purposes only.
