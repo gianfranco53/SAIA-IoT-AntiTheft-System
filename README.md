@@ -169,18 +169,6 @@ Lo stato di blocco viene salvato in **EEPROM** per garantire:
 
 ---
 
-## Interfacce e Hardware
-
-### Localizzatore – Modalità UI
-![Localizzatore UI](app.jpg)
-
-### App Proprietario
-![App Proprietario](appprior.jpg)
-
-### ESP32 con Relè
-![ESP32](esp32.jpg)
-
----
 
 ## Disclaimer – Responsabilità
 
