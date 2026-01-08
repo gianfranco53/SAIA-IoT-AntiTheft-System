@@ -52,6 +52,21 @@ Il sistema è composto da tre elementi principali:
 - comunicazione con l’ESP32 tramite Bluetooth;
 - invio notifiche al proprietario tramite Telegram.
 
+  ### 🔄 Modalità Operative (Power vs. Features)
+
+Il sistema è stato ingegnerizzato per bilanciare autonomia energetica e capacità di difesa attiva attraverso due stati logici:
+
+* **Modalità BACKGROUND (Efficienza Energetica):**
+    * **Focus:** Massima autonomia della batteria interna (~2 giorni).
+    * **Funzionamento:** L'app opera senza interfaccia visibile. Gestisce passivamente i dati GPS e rimane in ascolto del "ping" Bluetooth dall'ESP32.
+    * **Limitazioni:** Interfaccia grafica disattivata per abbattere i consumi.
+
+* **Modalità KIOSK (Difesa Attiva):**
+    * **Focus:** Sicurezza e cattura dell'intruso.
+    * **Funzionamento:** Attiva l'interfaccia utente in **Android Lock Task Mode**. 
+    * **Feature Esclusiva:** Abilita il **"Pulsante Gabbietta"**. Se l'intruso interagisce con lo schermo cercando di fermare il sistema, viene fotografato e segnalato istantaneamente.
+    * **Consumo:** Maggiore assorbimento energetico (da usare in fase critica o con alimentazione fissa).
+
 ### Unità di Controllo ESP32 (Opzionale)
 
 L’ESP32 è incaricata della gestione della **logica di blocco motore** tramite relè o MOSFET automotive.  
@@ -135,9 +150,9 @@ Lo stato di blocco viene salvato in **EEPROM** per garantire:
 
 ### Modalità Kiosk
 - interfaccia bloccata
-- uscita solo tramite sequenza nascosta (4 pressioni Volume Giù)
+- uscita solo tramite sequenza nascosta 
 
-### Pulsante Trappola
+### Pulsante Trappola (in modalidà Kiosk )
 - pulsante fittizio
 - attiva fotocamera frontale
 - invia immagine via Telegram
