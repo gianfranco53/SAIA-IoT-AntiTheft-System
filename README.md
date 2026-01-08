@@ -191,6 +191,14 @@ Qualsiasi utilizzo **commerciale o professionale** del progetto **non è autoriz
 
 L’autore è aperto a **collaborazioni o trattative formali**, purché svolte in modo responsabile e conforme alla legge.
 
+---
+
+## Contatti
+
+
+* 📩 **E-mail:** [gianfr.colasanti@gmail.com](mailto:gianfr.colasanti@gmail.com)
+* 🔗 **LinkedIn:** [gianfranco-colasanti-234b11300](https://www.linkedin.com/in/gianfranco-colasanti-234b11300)
+
 
 
 
