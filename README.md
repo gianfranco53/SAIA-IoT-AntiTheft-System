@@ -34,12 +34,18 @@ Il sistema è composto da tre elementi principali:
 2. **Unità di controllo ESP32 (opzionale)**
 3. **Telefono personale del proprietario**
 
+   
 ### App Localizzatore (Modalità Kiosk)
 ![Localizzatore - UI Completa](app.jpg)
 
+### App telefono prioritario
+![interfaccia telefono - Comandi ](appprior.jpg)
+
+
 ## 🔌 Architettura Hardware
 ### ESP32 con Relè Automotive
-![ESP32 con Relè](hardware_setup.jpg)
+![ESP32 con Relè](esp32.jpg)
+
 ### Funzioni del Localizzatore
 
 - acquisizione e gestione dei dati GPS;
